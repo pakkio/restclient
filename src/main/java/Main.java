@@ -1,6 +1,13 @@
 import com.google.gson.Gson;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,5 +27,19 @@ public class Main {
         System.out.println("Json: " + gotGson);
         System.out.println(raw2);
 
+        // post example
+
+
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("email", "first.last@example.com");
+        User u = new User();
+        u.setName("pippo");
+        u.setUser("U001");
+
+        HttpEntity requestEntity = new HttpEntity(gson.toJson(u));
+        ResponseEntity<String> response = restTemplate.postForEntity("http://httpbin.org/post", gson.toJson(u), String.class);
+       // restTemplate.postForEntity("http://httpbin.org/post", u, User.class);
+
+        System.out.println(response);
     }
 }
